@@ -59,23 +59,25 @@ public class RolRepositorio implements IRolRepositorio {
     }
     
     @Override
-    public Rol findByName(String nombre) {
+ public Rol findByName(String roleName) {
+    Rol rol = null;
     try {
         String sql = "SELECT * FROM rol WHERE roleName = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, nombre);
+        pstmt.setString(1, roleName);
         ResultSet rs = pstmt.executeQuery();
+
         if (rs.next()) {
-            Rol rol = new Rol();
+            rol = new Rol();
             rol.setRoleId(rs.getLong("roleId"));
             rol.setRoleName(rs.getString("roleName"));
-            return rol;
         }
     } catch (SQLException ex) {
         Logger.getLogger(RolRepositorio.class.getName()).log(Level.SEVERE, null, ex);
     }
-    return null;
+    return rol;
 }
+
 
 
     @Override

@@ -28,8 +28,9 @@ public class Main {
     EventService eventService = new EventService(eventoRepository);
     CategoryService categoryService = new CategoryService(categoryRepository);
     ArticuloService articuloService = new ArticuloService(articuloRepository);
-    UsuarioService usuarioService= new UsuarioService(usuarioRepository);
     RolService rolService= new RolService(rolRepository);
+        UsuarioService usuarioService= new UsuarioService(usuarioRepository,rolRepository);
+
 
 
     // Crear la interfaz gráfica con el servicio

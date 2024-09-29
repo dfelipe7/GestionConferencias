@@ -4,6 +4,7 @@
  */
 package co.com.events.domain.access;
 
+import co.com.events.domain.entities.Rol;
 import co.com.events.domain.entities.Usuario;
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface IUsuarioRepositorio {
     List<Usuario> findAll();
     boolean delete(Long id);
     boolean edit(Long id, Usuario usuario);
+    List<Usuario> findByRoleId(Long roleId); // Método para buscar usuarios por roleId
 }

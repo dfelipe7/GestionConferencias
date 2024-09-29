@@ -45,6 +45,7 @@ public class UsuarioRepositorio implements IUsuarioRepositorio {
     @Override
     public Usuario findById(Long id) {
         try {
+            RolRepositorio rolRepositorio = new RolRepositorio(); // Asegúrate de que esta conexión esté bien administrada
             String sql = "SELECT * FROM usuario WHERE userId = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, id);
@@ -55,7 +56,12 @@ public class UsuarioRepositorio implements IUsuarioRepositorio {
                 usuario.setUsername(rs.getString("username"));
                 usuario.setPassword(rs.getString("password"));
                 usuario.setEmail(rs.getString("email"));
-                
+                 
+                 Long roleId = rs.getLong("roleId");
+                 if (!rs.wasNull()) {
+                Rol rol = rolRepositorio.findById(roleId); // Método que debes implementar en RolRepositorio
+                usuario.setRole(rol); // Establecer el rol en el usuario
+            }
                 
                 // Aquí podrías necesitar buscar el rol en la base de datos
                 return usuario;
@@ -65,6 +71,77 @@ public class UsuarioRepositorio implements IUsuarioRepositorio {
         }
         return null;
     }
+  @Override
+public List<Usuario> findByRoleId(Long roleId) {
+    RolRepositorio rolRepositorio = new RolRepositorio();
+    List<Usuario> usuarios = new ArrayList<>();
+    try {
+        String sql = "SELECT * FROM usuario WHERE roleId = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setLong(1, roleId);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            Usuario usuario = new Usuario();
+            usuario.setUserId(rs.getLong("userId"));
+            usuario.setUsername(rs.getString("username"));
+            usuario.setPassword(rs.getString("password"));
+            usuario.setEmail(rs.getString("email"));
+            
+            // Obtener el rol del usuario
+            Rol rol = new Rol();
+            rol.setRoleId(roleId);
+            rol.setRoleName(rolRepositorio.findById(roleId).getRoleName()); // Obtener el nombre del rol
+            usuario.setRole(rol);
+            
+            usuarios.add(usuario);
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(UsuarioRepositorio.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return usuarios;
+}
+
+   /*
+@Override
+
+public List<Usuario> findByRoleId(Long roleId) {
+    List<Usuario> usuarios = new ArrayList<>();
+    try {
+        String sql = "SELECT * FROM usuario WHERE roleId = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setLong(1, roleId);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            Usuario usuario = new Usuario();
+            usuario.setUserId(rs.getLong("userId"));
+            usuario.setUsername(rs.getString("username"));
+            usuario.setPassword(rs.getString("password"));
+            usuario.setEmail(rs.getString("email"));
+
+            // Obtenemos el ID del rol del usuario
+            Long fetchedRoleId = rs.getLong("roleId");
+
+            // Creamos un objeto Rol y asignamos el ID
+            Rol rol = new Rol();
+            rol.setRoleId(fetchedRoleId);
+            
+            // Establecemos el rol en el objeto usuario
+            usuario.setRole(rol);
+            
+            // Añadimos el usuario a la lista de usuarios
+            usuarios.add(usuario);
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(UsuarioRepositorio.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return usuarios;
+}
+*/
+
+
+
 
     @Override
     public List<Usuario> findAll() {

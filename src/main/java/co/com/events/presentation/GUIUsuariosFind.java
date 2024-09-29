@@ -7,6 +7,7 @@ package co.com.events.presentation;
 
 import co.com.events.domain.entities.Category;
 import co.com.events.domain.entities.Evento;
+import co.com.events.domain.entities.Rol;
 import co.com.events.domain.entities.Usuario;
 import co.com.events.service.CategoryService;
 import co.com.events.service.EventService;
@@ -166,49 +167,48 @@ public class GUIUsuariosFind extends javax.swing.JDialog {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
+   // TODO add your handling code here:
 
-            // Obtenemos el texto de búsqueda y eliminamos espacios en blanco
+    // Obtenemos el texto de búsqueda y eliminamos espacios en blanco
     String searchText = txtSearch.getText().trim();
-    
+
     // Verificamos si se ha seleccionado la opción de búsqueda por ID
     if (rdoId.isSelected()) {
         try {
             // Intentamos convertir el texto de búsqueda a un número Long (ID)
             Long id = Long.parseLong(searchText);
-            // Buscamos el producto por ID usando el servicio de productos
+            // Buscamos el usuario por ID usando el servicio de usuarios
             Usuario usuario = usuarioService.findById(id);
+            
             if (usuario != null) {
-                // Si encontramos el producto, lo pasamos a la tabla
+                // Si encontramos el usuario, lo pasamos a la tabla
                 fillTable(List.of(usuario));
             } else {
-                // Si no encontramos ningún producto, pasamos una lista vacía
-               Messages.showMessageDialog("No hay usuarios con ese ID","Atencion");
-
+                // Si no encontramos ningún usuario, mostramos un mensaje y una lista vacía
+                Messages.showMessageDialog("No hay usuarios con ese ID", "Atención");
                 fillTable(List.of());
             }
         } catch (NumberFormatException e) {
             // Si el texto de búsqueda no es un número válido, mostramos una lista vacía
+            Messages.showMessageDialog("El ID ingresado no es válido", "Atención");
             fillTable(List.of());
         }
     } 
-    // Verificamos si se ha seleccionado la opción de búsqueda por nombre
-    else if (rdoName.isSelected()) {
-        
-        // Buscamos productos por nombre usando el servicio de productos
-      /*  Usuario usuario = usuarioService.findById(searchText);
-        if (usuario != null) {
-            // Si encontramos productos, los pasamos a la tabla
-                fillTable(List.of(category));
+    // Verificamos si se ha seleccionado la opción de búsqueda por rol
+  else if (rdoName.isSelected()) {
+    try {
+        List<Usuario> usuarios = usuarioService.findByRole(searchText);
+        if (!usuarios.isEmpty()) {
+            fillTable(usuarios);
         } else {
-            Messages.showMessageDialog("No hay productos con ese nombre","Atencion");
-
-            // Si no encontramos ningún producto, mostramos una lista vacía
+            Messages.showMessageDialog("No hay usuarios con ese rol", "Atención");
             fillTable(List.of());
         }
-    }*/
+    } catch (RuntimeException e) {
+        Messages.showMessageDialog(e.getMessage(), "Atención");
+        fillTable(List.of());
     }
-    txtSearch.setText("");
-        
+}
        
     }//GEN-LAST:event_btnSearchActionPerformed
     

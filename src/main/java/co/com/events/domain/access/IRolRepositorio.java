@@ -19,5 +19,5 @@ public interface IRolRepositorio {
     List<Rol> findAll();
     boolean delete(Long id);
     boolean edit(Long id, Rol rol);
-    Rol findByName(String nombre);
+    Rol findByName(String roleName);
 }
