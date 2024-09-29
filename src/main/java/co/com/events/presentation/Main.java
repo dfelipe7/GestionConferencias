@@ -29,10 +29,10 @@ public class Main {
     CategoryService categoryService = new CategoryService(categoryRepository);
     ArticuloService articuloService = new ArticuloService(articuloRepository);
     RolService rolService= new RolService(rolRepository);
-        UsuarioService usuarioService= new UsuarioService(usuarioRepository,rolRepository);
+    UsuarioService usuarioService= new UsuarioService(usuarioRepository,rolRepository);
 
-
-
+    InicioSesion sesion = new InicioSesion(usuarioService, rolService,articuloService);
+    sesion.setVisible(true);
     // Crear la interfaz gráfica con el servicio
     GUIEventos guiProducts = new GUIEventos(eventService,categoryService); // Instancia de GUIProducts
     GUICategories guiCategories = new GUICategories(categoryService); // Instancia de GUICategories

@@ -54,6 +54,20 @@ public class UsuarioService  {
 
     return usuariosPorRol;
 }
+ 
+ public Usuario verificarCredenciales(String username, String password) {
+    // Buscar el usuario por su nombre de usuario
+    Usuario usuario = usuarioRepository.findByUsername(username); 
+
+    // Verificar si el usuario existe y si la contraseña es correcta
+    if (usuario != null && usuario.getPassword().equals(password)) {
+        return usuario; // Retornar el usuario si las credenciales son correctas
+    }
+    
+    return null; // Retornar null si las credenciales no coinciden
+}
+
+
 
 
 

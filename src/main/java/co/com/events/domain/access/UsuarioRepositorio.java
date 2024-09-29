@@ -139,6 +139,45 @@ public List<Usuario> findByRoleId(Long roleId) {
     return usuarios;
 }
 */
+public Usuario findByUsername(String username) {
+    Usuario usuario = null;
+        RolRepositorio rolRepositorio = new RolRepositorio();
+
+    try {
+        String sql = "SELECT * FROM usuario WHERE username = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, username);
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            usuario = new Usuario();
+            usuario.setUserId(rs.getLong("userId"));
+            usuario.setUsername(rs.getString("username"));
+            usuario.setPassword(rs.getString("password"));
+            usuario.setEmail(rs.getString("email"));
+
+            // Buscar el rol asociado al usuario
+            Long roleId = rs.getLong("roleId");
+            Rol rol = rolRepositorio.findById(roleId); // Suponiendo que tienes un método para buscar el rol por ID
+            usuario.setRole(rol);
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(UsuarioRepositorio.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return usuario;
+}
+
+    // Método para desconectar de la base de datos
+    public void disconnect() {
+        if (conn != null) {
+            try {
+                conn.close();
+                conn = null; // Opción para limpiar la conexión
+            } catch (SQLException ex) {
+                Logger.getLogger(ArticuloRepositorio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
 
 
@@ -204,8 +243,7 @@ public List<Usuario> findByRoleId(Long roleId) {
         }
         return false;
     }
-
-    private void initDatabase() {
+private void initDatabase() {
         String sql = "CREATE TABLE IF NOT EXISTS usuario ("
                 + "userId INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "username TEXT NOT NULL,"
@@ -220,6 +258,7 @@ public List<Usuario> findByRoleId(Long roleId) {
             Logger.getLogger(UsuarioRepositorio.class.getName()).log(Level.SEVERE, "SQL error during table creation", ex);
         }
     }
+
 
     public void connect() {
         String url = "jdbc:sqlite::memory:";  // Cambia esto según la ubicación de tu base de datos

@@ -15,4 +15,5 @@ public interface IUsuarioRepositorio {
     boolean delete(Long id);
     boolean edit(Long id, Usuario usuario);
     List<Usuario> findByRoleId(Long roleId); // Método para buscar usuarios por roleId
+    Usuario findByUsername(String username);
 }
