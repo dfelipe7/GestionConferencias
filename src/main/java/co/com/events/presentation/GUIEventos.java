@@ -353,6 +353,8 @@ public class GUIEventos extends javax.swing.JFrame {
         txtId.setEnabled(true);
         txtName.setEnabled(true);
         txtDescription.setEnabled(true);
+        txtAforo.setEnabled(true);
+        txtPrecio.setEnabled(true);
     }
 
     private void stateInitial() {
@@ -420,6 +422,8 @@ public class GUIEventos extends javax.swing.JFrame {
         txtName.setText("");
         txtDescription.setText("");
         txtCategoria.setText("");
+        txtAforo.setText("");
+        txtPrecio.setText("");
 
     }
 

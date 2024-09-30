@@ -31,12 +31,12 @@ public class Main {
     RolService rolService= new RolService(rolRepository);
     UsuarioService usuarioService= new UsuarioService(usuarioRepository,rolRepository);
 
-    InicioSesion sesion = new InicioSesion(usuarioService, rolService,articuloService);
+    InicioSesion sesion = new InicioSesion(usuarioService, rolService,articuloService,eventService,categoryService);
     sesion.setVisible(true);
     // Crear la interfaz gráfica con el servicio
     GUIEventos guiProducts = new GUIEventos(eventService,categoryService); // Instancia de GUIProducts
     GUICategories guiCategories = new GUICategories(categoryService); // Instancia de GUICategories
-    GUIArticulos guiArticulos=new GUIArticulos(articuloService);
+   // GUIArticulos guiArticulos=new GUIArticulos(articuloService);
     GUIUsuarios guiUsuarios=new GUIUsuarios(usuarioService,rolService);
     //GestionarPaper paper = new GestionarPaper(articuloService);
     // Hacer visible la interfaz gráfica de productos

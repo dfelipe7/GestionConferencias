@@ -8,6 +8,8 @@ import co.com.events.domain.access.IUsuarioRepositorio;
 import co.com.events.domain.entities.Rol;
 import co.com.events.domain.entities.Usuario;
 import co.com.events.service.ArticuloService;
+import co.com.events.service.CategoryService;
+import co.com.events.service.EventService;
 import co.com.events.service.RolService;
 import co.com.events.service.UsuarioService;
 import javax.swing.JOptionPane;
@@ -24,12 +26,15 @@ public class InicioSesion extends javax.swing.JFrame {
  private RolService rolService;
     private UsuarioService usuarioService;
     private ArticuloService articuloService;
-
-    public InicioSesion(UsuarioService usuarioService,RolService rolService, ArticuloService articuloService) {
+    private EventService eventService;
+    private CategoryService categoryService;
+    public InicioSesion(UsuarioService usuarioService,RolService rolService, ArticuloService articuloService,EventService eventService, CategoryService categoryService) {
         initComponents();
         this.articuloService=articuloService;
         this.usuarioService=usuarioService;
         this.rolService=rolService;
+        this.eventService=eventService;
+        this.categoryService=categoryService;
     }
 
     /**
@@ -47,6 +52,7 @@ public class InicioSesion extends javax.swing.JFrame {
         txtEmail = new javax.swing.JTextField();
         btnIngresar = new javax.swing.JButton();
         txtContraseña = new javax.swing.JPasswordField();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,30 +67,35 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 36)); // NOI18N
+        jLabel3.setText("Inicio de Sesión");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(59, 59, 59)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
                         .addGap(26, 26, 26)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                            .addComponent(txtContraseña)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(128, 128, 128)
-                        .addComponent(btnIngresar)))
-                .addContainerGap(35, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnIngresar)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                                .addComponent(txtContraseña)))))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
+                .addContainerGap()
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -92,9 +103,9 @@ public class InicioSesion extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
                     .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                .addGap(18, 18, 18)
                 .addComponent(btnIngresar)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -104,7 +115,7 @@ public class InicioSesion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,11 +145,15 @@ public class InicioSesion extends javax.swing.JFrame {
             // Dependiendo del rol, redirigir a la interfaz correspondiente
             if (roleName.equals("Administrador")) {
                 // Mostrar la interfaz de administrador
-                showAdminDashboard();
+                mostrarVentanaAdministrador();
             } else if (roleName.equals("Autor")) {
                 // Mostrar la interfaz de usuario regular
-                showUserDashboard();
-            } else {
+                mostrarVentanaAutor();
+            }else if(roleName.equals("Organizador")){
+                
+                mostrarVentanaOrganizador();
+                
+            }else {
                 // Mostrar un mensaje si el rol no está soportado
                 JOptionPane.showMessageDialog(this, "Rol no soportado: " + roleName, "Atención", JOptionPane.WARNING_MESSAGE);
             }
@@ -153,18 +168,26 @@ public class InicioSesion extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnIngresarActionPerformed
 
-    private void showAdminDashboard() {
+    private void mostrarVentanaAdministrador() {
     // Código para mostrar el panel de administrador
-    GUIUsuarios adminDashboard = new GUIUsuarios(usuarioService,rolService);
-    adminDashboard.setVisible(true);
-    this.dispose(); // Cerrar la ventana de inicio de sesión si es necesario
+    GUIUsuarios guiUsuarios = new GUIUsuarios(usuarioService,rolService);
+    guiUsuarios.setVisible(true);
+    //this.dispose(); // Cerrar la ventana de inicio de sesión si es necesario
 }
 
-private void showUserDashboard() {
+private void mostrarVentanaAutor() {
     // Código para mostrar el panel de usuario regular
-    GUIArticulos userDashboard = new GUIArticulos(articuloService);
-    userDashboard.setVisible(true);
-    this.dispose(); // Cerrar la ventana de inicio de sesión si es necesario
+    GUIArticulos guiArticulos = new GUIArticulos(articuloService,eventService);
+    guiArticulos.setVisible(true);
+    //this.dispose(); // Cerrar la ventana de inicio de sesión si es necesario
+}
+
+
+private void mostrarVentanaOrganizador() {
+    // Código para mostrar el panel de usuario regular
+    GUIEventos guiEventos = new GUIEventos(eventService,categoryService);
+    guiEventos.setVisible(true);
+   // this.dispose(); // Cerrar la ventana de inicio de sesión si es necesario
 }
 
     
@@ -177,6 +200,7 @@ private void showUserDashboard() {
     private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JTextField txtEmail;

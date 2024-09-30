@@ -66,6 +66,7 @@ public class GUIUsuarios extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         cbxRol = new javax.swing.JComboBox<>();
+        button1 = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Productos");
@@ -176,6 +177,8 @@ public class GUIUsuarios extends javax.swing.JFrame {
             }
         });
 
+        button1.setLabel("button1");
+
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
         pnlCenterLayout.setHorizontalGroup(
@@ -204,6 +207,8 @@ public class GUIUsuarios extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(txtUsuario))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
+                                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))))))
@@ -217,7 +222,8 @@ public class GUIUsuarios extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(txtId)))
+                        .addComponent(txtId))
+                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -362,6 +368,7 @@ public class GUIUsuarios extends javax.swing.JFrame {
 
     cbxRol.removeAllItems(); // Limpiar el JComboBox
     for (Rol rol : roles) {
+        System.out.println("roles:"+rol.getRoleName());
         cbxRol.addItem(rol.getRoleName()); // Agregar cada rol por su nombre
     }
 }
@@ -405,6 +412,7 @@ public class GUIUsuarios extends javax.swing.JFrame {
     private javax.swing.JButton btnFind;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSave;
+    private java.awt.Button button1;
     private javax.swing.JComboBox<String> cbxRol;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

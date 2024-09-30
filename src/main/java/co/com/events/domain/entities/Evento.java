@@ -6,21 +6,13 @@ package co.com.events.domain.entities;
  */
 public class Evento {
 
-
     private Long eventId;
-
     private String eventName;
-    
     private String eventDescrip;
-    
     private double eventPrice;
-    
     private Long categoryId;
-    
-    private Location location;
-    
+    private Location location;   
     private int eventAforo;
-    
     private Organizador organizador;
     
     

@@ -1,11 +1,13 @@
 package co.com.events.presentation;
 
+import co.com.events.domain.access.EventoRepository;
 import co.com.events.domain.entities.Articulo;
 import co.com.events.domain.entities.Evento;
 import co.com.events.service.ArticuloService;
 import co.com.events.service.CategoryService;
 import co.com.events.service.EventService;
 import java.awt.Desktop;
+import java.awt.Event;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
@@ -13,6 +15,7 @@ import javax.swing.JFileChooser;
 
 import javax.swing.JFileChooser;
 import java.io.File;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -23,6 +26,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class GUIArticulos extends javax.swing.JFrame {
 
     private ArticuloService articuloService;
+    private EventService eventService;
+
 
     private boolean addOption;
     private File selectedPdfFile;
@@ -30,10 +35,12 @@ public class GUIArticulos extends javax.swing.JFrame {
     /**
      * Creates new form GUIProducts
      */
-    public GUIArticulos(ArticuloService articuloService) {
+    public GUIArticulos(ArticuloService articuloService, EventService eventService) {
         initComponents();
         this.articuloService = articuloService;
-    
+        this.eventService=eventService;
+        llenarComboBoxConferencias();
+
         stateInitial();
 
     }
@@ -73,6 +80,8 @@ public class GUIArticulos extends javax.swing.JFrame {
         txtIdAutor = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtIdConferencia = new javax.swing.JTextField();
+        cbxConferencias = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Productos");
@@ -203,12 +212,16 @@ public class GUIArticulos extends javax.swing.JFrame {
             }
         });
 
+        cbxConferencias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Conferencia" }));
+
+        jLabel7.setText("Conferencias:");
+
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
         pnlCenterLayout.setHorizontalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
@@ -216,6 +229,11 @@ public class GUIArticulos extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtTitulo))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addComponent(jLabel7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(cbxConferencias, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -250,7 +268,10 @@ public class GUIArticulos extends javax.swing.JFrame {
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addGap(1, 1, 1)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbxConferencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)))
@@ -287,6 +308,7 @@ public class GUIArticulos extends javax.swing.JFrame {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
          stateNew();
         txtTitulo.requestFocus();
+
         addOption = true;
     }//GEN-LAST:event_btnNuevoActionPerformed
 
@@ -389,7 +411,7 @@ public class GUIArticulos extends javax.swing.JFrame {
     private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
         // TODO add your handling code here:
         //CategoryService categoryService = new CategoryService(); // O una instancia ya creada
-    GUIArticulos guiArticulos= new GUIArticulos( articuloService); // Pasar el servicio
+    GUIArticulos guiArticulos= new GUIArticulos( articuloService,eventService); // Pasar el servicio
     guiArticulos.setVisible(true); // Mostrar la ventana de categorías
 
 
@@ -476,6 +498,7 @@ public class GUIArticulos extends javax.swing.JFrame {
     private javax.swing.JButton btnFind;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSave;
+    private javax.swing.JComboBox<String> cbxConferencias;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -483,6 +506,7 @@ public class GUIArticulos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlSouth;
@@ -509,6 +533,7 @@ public class GUIArticulos extends javax.swing.JFrame {
         txtIdConferencia.setEnabled(true);
         txtIdAutor.setEnabled(true);
         txtPalabras.setEnabled(true);
+
 
     }
 
@@ -599,7 +624,18 @@ private void editArticulo() {
             JOptionPane.showMessageDialog(this, "Error al actualizar el artículo", "Error", JOptionPane.ERROR_MESSAGE);
         }
 }
+ private void llenarComboBoxConferencias() {
+     //EventoRepository eventoRepository = new EventoRepository();
+    List<Evento> eventos = eventService.findAllProducts();
+    System.out.println("Número de eventos recuperados: " + (eventos != null ? eventos.size() : "Lista nula"));
 
+     System.out.println("hola");
+    cbxConferencias.removeAllItems(); // Limpiar el JComboBox
+    for (Evento evento : eventos) {
+        System.out.println("evntos--"+evento.getEventName());
+        cbxConferencias.addItem(evento.getEventName()); // Agregar cada rol por su nombre
+    }
+}
 
 
 
